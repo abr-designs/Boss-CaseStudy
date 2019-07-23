@@ -18,6 +18,10 @@ public class CharacterController : MonoBehaviour, IInput
         "RollRight",//[3] Trigger,
         "RollBackward",//[4]Trigger,
         "Turn",//[5] Float
+        "Jump", //[6] Trigger
+        "LightAttack", //[7] Bool
+        "AttackCount",//[8] int
+        "HeavyAttack", //[9] Bool
     };
 
     private List<int> animatorHash;
@@ -27,6 +31,18 @@ public class CharacterController : MonoBehaviour, IInput
 
     [SerializeField]
     private new CinemachineFreeLook camera;
+
+    [SerializeField, ReadOnly]
+    private bool lightAttacking;
+    [SerializeField, ReadOnly]
+    private bool heavyAttacking;
+    [SerializeField, ReadOnly]
+    private int attackCount;
+
+    [SerializeField]
+    private float clickCooldown = 1f;
+
+    private float cooldownTimer;
     //================================================================================================================//
 
 
@@ -63,6 +79,31 @@ public class CharacterController : MonoBehaviour, IInput
 
     private void LateUpdate()
     {
+        
+        //Attack Combo Click Check
+        //------------------------------------------------//
+
+        if (attackCount > 0)
+        {
+            if (cooldownTimer >= clickCooldown)
+            {
+                cooldownTimer = 0f;
+                attackCount = 0;
+                lightAttacking = false;
+                animator.SetBool(animatorHash[7], lightAttacking);
+
+                heavyAttacking = false;
+                animator.SetBool(animatorHash[9], heavyAttacking);
+                //animator.SetBool(animatorHash[X], lightAttacking);
+            }
+            else
+            {
+                cooldownTimer += Time.deltaTime;
+            }
+        }
+        
+        //Force Move in Camera Forward
+        //------------------------------------------------//
         if (playerInput == Vector2.zero)
             return;
         
@@ -89,6 +130,9 @@ public class CharacterController : MonoBehaviour, IInput
         };
 
 
+        //Rolling
+        //------------------------------------------------------------------//
+        
         Input.Actions.Character.RollLeft.Enable();
         Input.Actions.Character.RollLeft.performed += ctx => { animator.SetTrigger(animatorHash[1]); };
         Input.Actions.Character.RollForward.Enable();
@@ -98,7 +142,42 @@ public class CharacterController : MonoBehaviour, IInput
         Input.Actions.Character.RollBackward.Enable();
         Input.Actions.Character.RollBackward.performed += ctx => { animator.SetTrigger(animatorHash[4]); };
 
+        //Jumping
+        //------------------------------------------------------------------//
+        
+        Input.Actions.Character.Jump.Enable();
+        Input.Actions.Character.Jump.performed += ctx => { animator.SetTrigger(animatorHash[6]); };
+        
+        //TODO I should consider being able to combine both heavy and light attacks
+        //Attacking
+        //------------------------------------------------------------------//
+        Input.Actions.Character.LightAttack.Enable();
+        Input.Actions.Character.LightAttack.performed += ctx =>
+        {
+            if (heavyAttacking)
+                return;
 
+            lightAttacking = true;
+            cooldownTimer = 0f;
+            //var count = ctx.ReadValue<int>();
+            
+            //Debug.Log($"Click Count: {count}");
+            animator.SetBool(animatorHash[7], lightAttacking);
+            animator.SetInteger(animatorHash[8], ++attackCount);
+        };
+
+        Input.Actions.Character.HeavyAttack.Enable();
+        Input.Actions.Character.HeavyAttack.performed += ctx =>
+        {
+            if (lightAttacking)
+                return;
+
+            heavyAttacking = true;
+            cooldownTimer  = 0f;
+
+            animator.SetBool(animatorHash[9], heavyAttacking);
+            animator.SetInteger(animatorHash[8], ++attackCount);
+        };
     }
 
     public void DeinitControls()

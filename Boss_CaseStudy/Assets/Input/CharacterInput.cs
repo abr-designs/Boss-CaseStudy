@@ -64,6 +64,22 @@ public class CharacterInput : IInputActionCollection
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""LightAttack"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""4de7e55d-ecb3-4fa8-b7ff-438a48a975a4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""HeavyAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""cd2de2d9-d157-41c7-b55e-fa8dcfcf1816"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -176,6 +192,28 @@ public class CharacterInput : IInputActionCollection
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""163143df-c84f-4ce7-aea3-971be3f48035"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HeavyAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d738ac13-2050-4e37-8966-985e97162bfc"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LightAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -190,6 +228,8 @@ public class CharacterInput : IInputActionCollection
         m_Character_RollRight = m_Character.GetAction("RollRight");
         m_Character_RollBackward = m_Character.GetAction("RollBackward");
         m_Character_Jump = m_Character.GetAction("Jump");
+        m_Character_LightAttack = m_Character.GetAction("LightAttack");
+        m_Character_HeavyAttack = m_Character.GetAction("HeavyAttack");
     }
 
     ~CharacterInput()
@@ -245,6 +285,8 @@ public class CharacterInput : IInputActionCollection
     private readonly InputAction m_Character_RollRight;
     private readonly InputAction m_Character_RollBackward;
     private readonly InputAction m_Character_Jump;
+    private readonly InputAction m_Character_LightAttack;
+    private readonly InputAction m_Character_HeavyAttack;
     public struct CharacterActions
     {
         private CharacterInput m_Wrapper;
@@ -255,6 +297,8 @@ public class CharacterInput : IInputActionCollection
         public InputAction @RollRight => m_Wrapper.m_Character_RollRight;
         public InputAction @RollBackward => m_Wrapper.m_Character_RollBackward;
         public InputAction @Jump => m_Wrapper.m_Character_Jump;
+        public InputAction @LightAttack => m_Wrapper.m_Character_LightAttack;
+        public InputAction @HeavyAttack => m_Wrapper.m_Character_HeavyAttack;
         public InputActionMap Get() { return m_Wrapper.m_Character; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -282,6 +326,12 @@ public class CharacterInput : IInputActionCollection
                 Jump.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnJump;
                 Jump.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnJump;
                 Jump.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnJump;
+                LightAttack.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnLightAttack;
+                LightAttack.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnLightAttack;
+                LightAttack.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnLightAttack;
+                HeavyAttack.started -= m_Wrapper.m_CharacterActionsCallbackInterface.OnHeavyAttack;
+                HeavyAttack.performed -= m_Wrapper.m_CharacterActionsCallbackInterface.OnHeavyAttack;
+                HeavyAttack.canceled -= m_Wrapper.m_CharacterActionsCallbackInterface.OnHeavyAttack;
             }
             m_Wrapper.m_CharacterActionsCallbackInterface = instance;
             if (instance != null)
@@ -304,6 +354,12 @@ public class CharacterInput : IInputActionCollection
                 Jump.started += instance.OnJump;
                 Jump.performed += instance.OnJump;
                 Jump.canceled += instance.OnJump;
+                LightAttack.started += instance.OnLightAttack;
+                LightAttack.performed += instance.OnLightAttack;
+                LightAttack.canceled += instance.OnLightAttack;
+                HeavyAttack.started += instance.OnHeavyAttack;
+                HeavyAttack.performed += instance.OnHeavyAttack;
+                HeavyAttack.canceled += instance.OnHeavyAttack;
             }
         }
     }
@@ -316,5 +372,7 @@ public class CharacterInput : IInputActionCollection
         void OnRollRight(InputAction.CallbackContext context);
         void OnRollBackward(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnLightAttack(InputAction.CallbackContext context);
+        void OnHeavyAttack(InputAction.CallbackContext context);
     }
 }

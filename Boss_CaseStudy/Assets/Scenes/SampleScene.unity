@@ -188,7 +188,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 78936287}
-  m_LocalRotation: {x: 0.006819739, y: -1.2352933e-10, z: 8.4131394e-13, w: 0.9999768}
+  m_LocalRotation: {x: 0.006819737, y: 8.1593415e-10, z: -5.564065e-12, w: 0.9999768}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -290,7 +290,7 @@ MonoBehaviour:
     m_LegacyVelocityFilterStrength: -1
   m_XAxis:
     Value: 0
-    m_MaxSpeed: 300
+    m_MaxSpeed: 200
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse X
@@ -688,7 +688,7 @@ MonoBehaviour:
     m_LegacyVelocityFilterStrength: -1
   m_XAxis:
     Value: 0
-    m_MaxSpeed: 300
+    m_MaxSpeed: 200
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse X
@@ -796,7 +796,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.006819739, y: -9.394577e-10, z: 6.4070056e-12, w: 0.99997675}
+  m_LocalRotation: {x: 0.0068197353, y: 9.394568e-10, z: -6.4069956e-12, w: 0.99997675}
   m_LocalPosition: {x: -5.7904067, y: 2.5000024, z: 7.825651}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -908,7 +908,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 977725020}
-  m_LocalRotation: {x: 0.08604984, y: 0.000000004290172, z: -3.7053707e-10, w: 0.99629086}
+  m_LocalRotation: {x: 0.08604984, y: 0.0000000042856403, z: -3.701456e-10, w: 0.99629086}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -995,7 +995,7 @@ MonoBehaviour:
     m_LegacyVelocityFilterStrength: -1
   m_XAxis:
     Value: 0
-    m_MaxSpeed: 300
+    m_MaxSpeed: 200
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse X
@@ -1145,7 +1145,7 @@ MonoBehaviour:
     m_LegacyVelocityFilterStrength: -1
   m_XAxis:
     Value: 0
-    m_MaxSpeed: 300
+    m_MaxSpeed: 200
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse X
@@ -1629,6 +1629,11 @@ PrefabInstance:
       propertyPath: camera
       value: 
       objectReference: {fileID: 989260375}
+    - target: {fileID: 8510060856231383041, guid: 46288241b14891a4b891c1fd5534c433,
+        type: 3}
+      propertyPath: clickCooldown
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46288241b14891a4b891c1fd5534c433, type: 3}
 --- !u!4 &4926731842205949809 stripped
