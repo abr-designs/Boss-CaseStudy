@@ -1,13 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using CaseStudy;
 using Cinemachine;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Input = CaseStudy.Input;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody)), RequireComponent(typeof(CapsuleCollider)), RequireComponent(typeof(Animator))]
-public class CharacterController : MonoBehaviour, IInput
+public class CharacterController : MonoBehaviour, IInput, IHit
 {
 
     private readonly List<string> animatorNames = new List<string>()
@@ -45,6 +47,13 @@ public class CharacterController : MonoBehaviour, IInput
     private float cooldownTimer;
     //================================================================================================================//
 
+    [SerializeField, FoldoutGroup("HitBox"), Required]
+    private BoxCollider hitCollider;
+
+    [SerializeField, FoldoutGroup("HitBox"), Required]
+    private GameObject[] HitParticlesPrefabs;
+    
+    //================================================================================================================//
 
     private new Transform transform;
     private new Rigidbody rigidbody;
@@ -62,12 +71,19 @@ public class CharacterController : MonoBehaviour, IInput
         animator = gameObject.GetComponent<Animator>();
 
         InitAnimator();
-
         InitControls();
+        InitHitCollider();
+
     }
 
     //================================================================================================================//
-
+    private void InitHitCollider()
+    {
+        //Avoid Hitting ourselves
+        Physics.IgnoreCollision(hitCollider, collider);
+        hitCollider.gameObject.SetActive(false);
+    }
+    
     private void InitAnimator()
     {
         animatorHash = new List<int>();
@@ -106,6 +122,7 @@ public class CharacterController : MonoBehaviour, IInput
         //------------------------------------------------//
         if (playerInput == Vector2.zero)
             return;
+
         
         var camForward = (transform.position - camera.transform.position).normalized;
         camForward.y = 0f;
@@ -184,4 +201,33 @@ public class CharacterController : MonoBehaviour, IInput
     {
         throw new System.NotImplementedException();
     }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!other.CompareTag("Hittable"))
+            return;
+        
+        Debug.Log($"Hit: {other.name}", other.gameObject);
+
+        var temp = Instantiate(HitParticlesPrefabs[Random.Range(0,HitParticlesPrefabs.Length)], other.ClosestPoint(hitCollider.transform.position),
+            Quaternion.identity);
+    }
+
+    public void Hit(int milliseconds)
+    {
+        StopCoroutine(HitCoroutine(0f));
+
+        StartCoroutine(HitCoroutine(milliseconds / 1000f));
+    }
+
+    private IEnumerator HitCoroutine(float seconds)
+    {
+        hitCollider.gameObject.SetActive(true);
+        
+        yield return new WaitForSeconds(seconds);
+        
+        hitCollider.gameObject.SetActive(false);
+    }
+    
 }
