@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using Random = UnityEngine.Random;
 
 public class SpecialAttack : MonoBehaviour
 {
@@ -138,4 +140,13 @@ public class SpecialAttack : MonoBehaviour
 
 
 #endif
+	//public void Recycle()
+	//{
+	//	RecycleObject(typeof(SpecialAttack), gameObject);
+	//}
+//
+	//public void RecycleObject(Type type, GameObject gameObject)
+	//{
+	//	
+	//}
 }

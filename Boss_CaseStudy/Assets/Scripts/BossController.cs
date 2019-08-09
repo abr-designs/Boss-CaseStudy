@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 using Sirenix.OdinInspector;
+using Object = UnityEngine.Object;
 
 public class BossController : MonoBehaviour, IHit
 {
@@ -173,12 +175,37 @@ public class BossController : MonoBehaviour, IHit
 		}
 	}
 
+	//private Dictionary<Type, Stack<GameObject>> recyclingBin;
+	//public bool TryGetObject<T>(Type type, bool Enable = true, out T obj) where  T : MonoBehaviour
+	//{
+	//	obj = null;
+	//	
+	//	if (!recyclingBin.ContainsKey(type))
+	//		return false;
+//
+	//	var gObject = recyclingBin[typeof(type)].Pop();
+//
+	//	obj = gObject.GetComponent<T>();
+//
+	//	gObject.SetActive(Enable);
+//
+	//	return true;
+//
+	//}
+
 	//============================================================================================================//
 
 	void Particles()
 	{
-		var obj = Instantiate(specialAttack).GetComponent<SpecialAttack>();
-		obj.Init(spawnPositionTransform.position, playerTransform.position - transform.position);
+		SpecialAttack temp= Instantiate(specialAttack).GetComponent<SpecialAttack>();
+
+		//if (!TryGetObject<SpecialAttack>(typeof(SpecialAttack),true, out temp))
+		//{
+		//	temp = Instantiate(specialAttack).GetComponent<SpecialAttack>();
+		//}
+		//var obj = Instantiate(specialAttack).GetComponent<SpecialAttack>();
+		
+		temp.Init(spawnPositionTransform.position, playerTransform.position - transform.position);
 
 
 		Instantiate(particlesPrefab, spawnPositionTransform.position + Vector3.up, Quaternion.Euler(new Vector3(-90f, 0f,0f)));
